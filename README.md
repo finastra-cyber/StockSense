@@ -1,6 +1,6 @@
 # Hello there,
 
 Fist Commit For FinAstra <br>
-Hii i am Rajkumar....!
+Hii i am Rajkumar....
 
-Hello.
+Hello

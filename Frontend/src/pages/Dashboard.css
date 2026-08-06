@@ -1,0 +1,460 @@
+.dash {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+
+.dash__sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.dash__brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+.dash__brand .dot {
+  color: var(--signal-up);
+}
+
+.dash__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.dash__nav-link {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  padding: 0.55rem 0.7rem;
+  border-radius: 7px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.dash__nav-link:hover {
+  background: var(--panel-raised);
+  color: var(--text);
+}
+
+.dash__balance {
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.dash__balance span {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}
+
+.dash__balance strong {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  color: var(--signal-up);
+}
+
+/* ---------- Main column ---------- */
+
+.dash__main {
+  padding: 1.75rem 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.dash__topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.dash__eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+}
+
+.dash__topbar h1 {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.dash__user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dash__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ---------- Panels ---------- */
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.5rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.panel__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.1rem;
+}
+
+.panel__head h2 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.panel__meta {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+
+.panel-row {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ---------- Trending / market overview ---------- */
+
+.trending {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+}
+
+.trending__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--panel-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.85rem 0.95rem;
+}
+
+.trending__sym {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.trending__name {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  margin-top: 0.15rem;
+}
+
+.trending__right {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+/* ---------- Chart panel ---------- */
+
+.chart-panel {
+  display: grid;
+  grid-template-columns: 1fr 160px;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.dashboard-chart {
+  width: 100%;
+  height: 220px;
+  display: block;
+}
+
+.chart-panel__indicators {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.indicator-chip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.indicator-chip span {
+  color: var(--text-faint);
+}
+
+/* ---------- Trade form ---------- */
+
+.trade-form__toggle {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.15rem;
+}
+
+.trade-form__toggle button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.6rem 0;
+  cursor: pointer;
+}
+
+.trade-form__toggle button.is-buy {
+  background: rgba(53, 208, 127, 0.15);
+  color: var(--signal-up);
+}
+
+.trade-form__toggle button.is-sell {
+  background: rgba(255, 107, 107, 0.15);
+  color: var(--signal-down);
+}
+
+/* ---------- Holdings table ---------- */
+
+.holdings {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.holdings th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.holdings td {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+}
+
+.holdings tr:last-child td {
+  border-bottom: none;
+}
+
+.holdings__sym {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+/* ---------- News list ---------- */
+
+.news-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.news-item {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+}
+
+.news-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.news-item__top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.sentiment-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.verdict-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.verdict-tag--buy {
+  background: rgba(53, 208, 127, 0.15);
+  color: var(--signal-up);
+}
+
+.verdict-tag--sell {
+  background: rgba(255, 107, 107, 0.15);
+  color: var(--signal-down);
+}
+
+.verdict-tag--hold {
+  background: rgba(240, 180, 41, 0.15);
+  color: var(--accent-gold);
+}
+
+.news-item p {
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.news-item__source {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+
+/* ---------- Watchlist ---------- */
+
+.watchlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.watchlist li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.watchlist li:last-child {
+  border-bottom: none;
+}
+
+.watchlist__sym {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--accent-gold);
+}
+
+.watchlist__name {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  margin-top: 0.1rem;
+}
+
+.watchlist__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1100px) {
+  .trending {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .panel-row {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .dash {
+    grid-template-columns: 1fr;
+  }
+
+  .dash__sidebar {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .dash__nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .dash__balance {
+    border-top: none;
+    padding-top: 0;
+    margin-left: auto;
+  }
+
+  .trending {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

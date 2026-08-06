@@ -1,0 +1,56 @@
+.ticker {
+  width: 100%;
+  overflow: hidden;
+  background: var(--panel-raised);
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.ticker__track {
+  display: inline-flex;
+  animation: scroll-left 38s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track {
+    animation: none;
+  }
+}
+
+.ticker__item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  padding: 0.55rem 1.25rem;
+  border-right: 1px solid var(--line);
+  color: var(--text-dim);
+}
+
+.ticker__sym {
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.ticker__price {
+  color: var(--text-dim);
+}
+
+.ticker__delta.is-up {
+  color: var(--signal-up);
+}
+
+.ticker__delta.is-down {
+  color: var(--signal-down);
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

@@ -1,55 +1,68 @@
-import { useState } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
-import AuthChart from '../components/AuthChart.jsx'
-import { useAuth } from '../context/AuthContext.jsx'
-import './Auth.css'
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import AuthChart from "../components/AuthChart.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import "./Auth.css";
 
 function Login() {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { login } = useAuth()
-  const from = location.state?.from?.pathname || '/dashboard'
-  const [form, setForm] = useState({ email: '', password: '' })
-  const [errors, setErrors] = useState({})
-  const [submitError, setSubmitError] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+  const from = location.state?.from?.pathname || "/dashboard";
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   function handleChange(e) {
-    const { name, value } = e.target
-    setForm((f) => ({ ...f, [name]: value }))
-    setErrors((err) => ({ ...err, [name]: '' }))
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+    setErrors((err) => ({ ...err, [name]: "" }));
   }
 
   function validate() {
-    const next = {}
+    const next = {};
     if (!form.email.trim()) {
-      next.email = 'Enter your email address.'
+      next.email = "Enter your email address.";
     } else if (!/^\S+@\S+\.\S+$/.test(form.email)) {
-      next.email = 'Enter a valid email address.'
+      next.email = "Enter a valid email address.";
     }
     if (!form.password) {
-      next.password = 'Enter your password.'
+      next.password = "Enter your password.";
     }
-    return next
+    return next;
   }
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    setSubmitError('')
-    const next = validate()
-    setErrors(next)
-    if (Object.keys(next).length > 0) return
+    e.preventDefault();
+    setSubmitError("");
+    const next = validate();
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
 
-    setSubmitting(true)
+    setSubmitting(true);
     try {
-      // TODO: replace with a call to the FastAPI /auth/login endpoint.
-      await new Promise((res) => setTimeout(res, 600))
-      login({ name: form.email.split('@')[0], email: form.email })
-      navigate(from, { replace: true })
-    } catch {
-      setSubmitError('Could not log you in. Check your details and try again.')
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email: form.email, password: form.password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        login(data.user);
+        navigate(from, { replace: true });
+      } else {
+        setSubmitError(data.message || "Login failed. Check your credentials.");
+      }
+    } catch (err) {
+      setSubmitError(
+        "Could not log you in. Check your connection and try again.",
+      );
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
   }
 
@@ -61,7 +74,10 @@ function Login() {
           StockSense<span className="dot">.</span>
         </Link>
         <div className="auth__quote">
-          <p>"Every position starts as a paper trade before it earns real capital."</p>
+          <p>
+            "Every position starts as a paper trade before it earns real
+            capital."
+          </p>
           <span>SIGNAL / EDUCATIONAL, NOT FINANCIAL ADVICE</span>
         </div>
       </div>
@@ -72,7 +88,9 @@ function Login() {
             ← Back to StockSense
           </Link>
           <h1>Welcome back</h1>
-          <p className="auth__sub">Log in to pick up your portfolio where you left it.</p>
+          <p className="auth__sub">
+            Log in to pick up your portfolio where you left it.
+          </p>
 
           {submitError && <div className="auth__banner">{submitError}</div>}
 
@@ -88,7 +106,9 @@ function Login() {
                 value={form.email}
                 onChange={handleChange}
               />
-              {errors.email && <div className="field-error">{errors.email}</div>}
+              {errors.email && (
+                <div className="field-error">{errors.email}</div>
+              )}
             </div>
 
             <div className="field">
@@ -102,7 +122,9 @@ function Login() {
                 value={form.password}
                 onChange={handleChange}
               />
-              {errors.password && <div className="field-error">{errors.password}</div>}
+              {errors.password && (
+                <div className="field-error">{errors.password}</div>
+              )}
             </div>
 
             <div className="field-row">
@@ -115,18 +137,25 @@ function Login() {
               </Link>
             </div>
 
-            <button type="submit" className="btn btn--primary btn--block" disabled={submitting}>
-              {submitting ? 'Logging in…' : 'Log in'}
+            <button
+              type="submit"
+              className="btn btn--primary btn--block"
+              disabled={submitting}
+            >
+              {submitting ? "Logging in…" : "Log in"}
             </button>
           </form>
 
           <div className="auth__switch">
-            New to StockSense? <Link to="/register" className="link-muted">Create an account</Link>
+            New to StockSense?{" "}
+            <Link to="/register" className="link-muted">
+              Create an account
+            </Link>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

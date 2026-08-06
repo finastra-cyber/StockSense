@@ -1,63 +1,80 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import AuthChart from '../components/AuthChart.jsx'
-import { useAuth } from '../context/AuthContext.jsx'
-import './Auth.css'
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthChart from "../components/AuthChart.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import "./Auth.css";
 
-const INITIAL = { name: '', email: '', password: '', confirmPassword: '' }
+const INITIAL = { name: "", email: "", password: "", confirmPassword: "" };
 
 function Register() {
-  const navigate = useNavigate()
-  const { login } = useAuth()
-  const [form, setForm] = useState(INITIAL)
-  const [errors, setErrors] = useState({})
-  const [submitError, setSubmitError] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [form, setForm] = useState(INITIAL);
+  const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   function handleChange(e) {
-    const { name, value } = e.target
-    setForm((f) => ({ ...f, [name]: value }))
-    setErrors((err) => ({ ...err, [name]: '' }))
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+    setErrors((err) => ({ ...err, [name]: "" }));
   }
 
   function validate() {
-    const next = {}
+    const next = {};
     if (!form.name.trim()) {
-      next.name = 'Enter your full name.'
+      next.name = "Enter your full name.";
     }
     if (!form.email.trim()) {
-      next.email = 'Enter your email address.'
+      next.email = "Enter your email address.";
     } else if (!/^\S+@\S+\.\S+$/.test(form.email)) {
-      next.email = 'Enter a valid email address.'
+      next.email = "Enter a valid email address.";
     }
     if (!form.password) {
-      next.password = 'Choose a password.'
+      next.password = "Choose a password.";
     } else if (form.password.length < 8) {
-      next.password = 'Use at least 8 characters.'
+      next.password = "Use at least 8 characters.";
     }
     if (form.confirmPassword !== form.password) {
-      next.confirmPassword = 'Passwords do not match.'
+      next.confirmPassword = "Passwords do not match.";
     }
-    return next
+    return next;
   }
 
   async function handleSubmit(e) {
-    e.preventDefault()
-    setSubmitError('')
-    const next = validate()
-    setErrors(next)
-    if (Object.keys(next).length > 0) return
+    e.preventDefault();
+    setSubmitError("");
+    const next = validate();
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
 
-    setSubmitting(true)
+    setSubmitting(true);
     try {
-      // TODO: replace with a call to the FastAPI /auth/register endpoint.
-      await new Promise((res) => setTimeout(res, 600))
-      login({ name: form.name, email: form.email })
-      navigate('/dashboard', { replace: true })
-    } catch {
-      setSubmitError('Could not create your account. Please try again.')
+      const res = await fetch("/api/auth/signUp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          username: form.name,
+          email: form.email,
+          password: form.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        login(data.user);
+        navigate("/dashboard", { replace: true });
+      } else {
+        setSubmitError(
+          data.message || "Could not create your account. Please try again.",
+        );
+      }
+    } catch (err) {
+      setSubmitError("Could not create your account. Please try again.");
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
   }
 
@@ -69,7 +86,10 @@ function Register() {
           StockSense<span className="dot">.</span>
         </Link>
         <div className="auth__quote">
-          <p>"₹1,00,000 in virtual capital. Zero real risk. Every lesson still counts."</p>
+          <p>
+            "₹1,00,000 in virtual capital. Zero real risk. Every lesson still
+            counts."
+          </p>
           <span>SIGNAL / EDUCATIONAL, NOT FINANCIAL ADVICE</span>
         </div>
       </div>
@@ -80,7 +100,9 @@ function Register() {
             ← Back to StockSense
           </Link>
           <h1>Create your account</h1>
-          <p className="auth__sub">Get a virtual portfolio and start reading the market today.</p>
+          <p className="auth__sub">
+            Get a virtual portfolio and start reading the market today.
+          </p>
 
           {submitError && <div className="auth__banner">{submitError}</div>}
 
@@ -110,7 +132,9 @@ function Register() {
                 value={form.email}
                 onChange={handleChange}
               />
-              {errors.email && <div className="field-error">{errors.email}</div>}
+              {errors.email && (
+                <div className="field-error">{errors.email}</div>
+              )}
             </div>
 
             <div className="field">
@@ -124,7 +148,9 @@ function Register() {
                 value={form.password}
                 onChange={handleChange}
               />
-              {errors.password && <div className="field-error">{errors.password}</div>}
+              {errors.password && (
+                <div className="field-error">{errors.password}</div>
+              )}
             </div>
 
             <div className="field">
@@ -143,18 +169,25 @@ function Register() {
               )}
             </div>
 
-            <button type="submit" className="btn btn--primary btn--block" disabled={submitting}>
-              {submitting ? 'Creating account…' : 'Create account'}
+            <button
+              type="submit"
+              className="btn btn--primary btn--block"
+              disabled={submitting}
+            >
+              {submitting ? "Creating account…" : "Create account"}
             </button>
           </form>
 
           <div className="auth__switch">
-            Already have an account? <Link to="/login" className="link-muted">Log in</Link>
+            Already have an account?{" "}
+            <Link to="/login" className="link-muted">
+              Log in
+            </Link>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Register
+export default Register;

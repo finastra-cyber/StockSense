@@ -16,7 +16,7 @@ load_dotenv()
 
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
-if not NEWS_API_KEY or NEWS_API_KEY == " 09459f6a3c4d417e88c6f0eeddc409cd":
+if not NEWS_API_KEY or NEWS_API_KEY == "PASTE_YOUR_NEWSAPI_KEY_HERE":
     raise ValueError(
         "NewsAPI key missing. Add your key to the .env file."
     )

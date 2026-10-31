@@ -1,4 +1,3 @@
-
 import os
 from datetime import datetime, timedelta, timezone
 
@@ -7,9 +6,8 @@ import requests
 from dotenv import load_dotenv
 from transformers import pipeline
 
-
 # --------------------------------------------------
-# 1. LOAD API KEY
+# 1 LOAD API KEY
 # --------------------------------------------------
 
 load_dotenv()
@@ -17,9 +15,7 @@ load_dotenv()
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
 if not NEWS_API_KEY or NEWS_API_KEY == "PASTE_YOUR_NEWSAPI_KEY_HERE":
-    raise ValueError(
-        "NewsAPI key missing. Add your key to the .env file."
-    )
+    raise ValueError("NewsAPI key missing. Add your key to the .env file.")
 
 
 # --------------------------------------------------
@@ -41,6 +37,7 @@ STOCKS = {
 # --------------------------------------------------
 # 3. FETCH NEWS FROM NEWSAPI
 # --------------------------------------------------
+
 
 def fetch_news(company_name, page_size=30):
     url = "https://newsapi.org/v2/everything"
@@ -66,9 +63,7 @@ def fetch_news(company_name, page_size=30):
     data = response.json()
 
     if data.get("status") != "ok":
-        raise RuntimeError(
-            f"NewsAPI error: {data.get('message', 'Unknown error')}"
-        )
+        raise RuntimeError(f"NewsAPI error: {data.get('message', 'Unknown error')}")
 
     articles = []
 
@@ -83,15 +78,17 @@ def fetch_news(company_name, page_size=30):
         # Combine the headline and description for analysis.
         text = f"{title}. {description}".strip()
 
-        articles.append({
-            "company": company_name,
-            "source": (article.get("source") or {}).get("name", ""),
-            "published_at": article.get("publishedAt", ""),
-            "title": title,
-            "description": description,
-            "url": article.get("url", ""),
-            "text_for_analysis": text,
-        })
+        articles.append(
+            {
+                "company": company_name,
+                "source": (article.get("source") or {}).get("name", ""),
+                "published_at": article.get("publishedAt", ""),
+                "title": title,
+                "description": description,
+                "url": article.get("url", ""),
+                "text_for_analysis": text,
+            }
+        )
 
     # Remove duplicate articles with the same URL.
     unique_articles = []
@@ -115,6 +112,7 @@ def fetch_news(company_name, page_size=30):
 # 4. LOAD FINBERT
 # --------------------------------------------------
 
+
 def load_sentiment_model():
     print("\nLoading FinBERT...")
     print("The first run may take several minutes.")
@@ -133,14 +131,12 @@ def load_sentiment_model():
 # 5. ANALYSE THE SENTIMENT OF EACH ARTICLE
 # --------------------------------------------------
 
+
 def analyse_sentiment(articles, model):
     if not articles:
         return []
 
-    texts = [
-        article["text_for_analysis"]
-        for article in articles
-    ]
+    texts = [article["text_for_analysis"] for article in articles]
 
     predictions = model(
         texts,
@@ -157,10 +153,7 @@ def analyse_sentiment(articles, model):
         if isinstance(prediction, dict):
             prediction = [prediction]
 
-        scores = {
-            item["label"].lower(): float(item["score"])
-            for item in prediction
-        }
+        scores = {item["label"].lower(): float(item["score"]) for item in prediction}
 
         positive = scores.get("positive", 0.0)
         negative = scores.get("negative", 0.0)
@@ -171,14 +164,16 @@ def analyse_sentiment(articles, model):
         # Score range is approximately -1 to +1.
         sentiment_score = positive - negative
 
-        results.append({
-            **article,
-            "sentiment": predicted_label,
-            "positive_probability": round(positive, 4),
-            "negative_probability": round(negative, 4),
-            "neutral_probability": round(neutral, 4),
-            "sentiment_score": round(sentiment_score, 4),
-        })
+        results.append(
+            {
+                **article,
+                "sentiment": predicted_label,
+                "positive_probability": round(positive, 4),
+                "negative_probability": round(negative, 4),
+                "neutral_probability": round(neutral, 4),
+                "sentiment_score": round(sentiment_score, 4),
+            }
+        )
 
     return results
 
@@ -187,14 +182,12 @@ def analyse_sentiment(articles, model):
 # 6. CALCULATE OVERALL NEWS SENTIMENT
 # --------------------------------------------------
 
+
 def calculate_overall_sentiment(results):
     if not results:
         return None
 
-    scores = [
-        item["sentiment_score"]
-        for item in results
-    ]
+    scores = [item["sentiment_score"] for item in results]
 
     average_score = sum(scores) / len(scores)
 
@@ -210,21 +203,16 @@ def calculate_overall_sentiment(results):
         "overall_sentiment": overall_label,
         "average_sentiment_score": round(average_score, 4),
         "articles_analysed": len(results),
-        "positive_articles": sum(
-            item["sentiment"] == "positive" for item in results
-        ),
-        "negative_articles": sum(
-            item["sentiment"] == "negative" for item in results
-        ),
-        "neutral_articles": sum(
-            item["sentiment"] == "neutral" for item in results
-        ),
+        "positive_articles": sum(item["sentiment"] == "positive" for item in results),
+        "negative_articles": sum(item["sentiment"] == "negative" for item in results),
+        "neutral_articles": sum(item["sentiment"] == "neutral" for item in results),
     }
 
 
 # --------------------------------------------------
 # 7. MAIN PROGRAM
 # --------------------------------------------------
+
 
 def main():
     print("\n===================================")
@@ -274,10 +262,7 @@ def main():
         print("\n========== SENTIMENT SUMMARY ==========")
         print(f"Company: {company_name}")
         print(f"Overall sentiment: {summary['overall_sentiment']}")
-        print(
-            "Average sentiment score: "
-            f"{summary['average_sentiment_score']}"
-        )
+        print("Average sentiment score: " f"{summary['average_sentiment_score']}")
         print(f"Articles analysed: {summary['articles_analysed']}")
         print(f"Positive articles: {summary['positive_articles']}")
         print(f"Negative articles: {summary['negative_articles']}")
@@ -308,9 +293,7 @@ def main():
 
     except Exception as error:
         print(f"\nAn error occurred: {error}")
-        print(
-            "Check the error message and installed library versions."
-        )
+        print("Check the error message and installed library versions.")
 
 
 if __name__ == "__main__":

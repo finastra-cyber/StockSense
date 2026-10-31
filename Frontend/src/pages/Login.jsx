@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import AuthChart from "../components/AuthChart.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -8,7 +8,7 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/app/dashboard";
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState("");
@@ -71,7 +71,7 @@ function Login() {
       <div className="auth__panel">
         <AuthChart />
         <Link to="/" className="auth__brand">
-          StockSense<span className="dot">.</span>
+          Fin<span className="accent">Astra</span><span className="dot">.</span>
         </Link>
         <div className="auth__quote">
           <p>
@@ -85,7 +85,7 @@ function Login() {
       <div className="auth__form-side">
         <div className="auth__form-wrap">
           <Link to="/" className="auth__back">
-            ← Back to StockSense
+            â† Back to StockSense
           </Link>
           <h1>Welcome back</h1>
           <p className="auth__sub">
@@ -118,7 +118,7 @@ function Login() {
                 name="password"
                 type="password"
                 autoComplete="current-password"
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                 value={form.password}
                 onChange={handleChange}
               />
@@ -142,12 +142,12 @@ function Login() {
               className="btn btn--primary btn--block"
               disabled={submitting}
             >
-              {submitting ? "Logging in…" : "Log in"}
+              {submitting ? "Logging inâ€¦" : "Log in"}
             </button>
           </form>
 
           <div className="auth__switch">
-            New to StockSense?{" "}
+            New to FinAstra?{" "}
             <Link to="/register" className="link-muted">
               Create an account
             </Link>
@@ -159,3 +159,4 @@ function Login() {
 }
 
 export default Login;
+

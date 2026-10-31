@@ -1,19 +1,13 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import BrandLoader from './BrandLoader.jsx'
 
-function ProtectedRoute({ children }) {
+/** Redirects unauthenticated users to /login, preserving intended destination */
+export default function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth()
   const location = useLocation()
 
-  if (loading) {
-    return null // or a spinner — just don't redirect yet
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location }} />
-  }
-
+  if (loading) return <BrandLoader />
+  if (!isAuthenticated) return <Navigate to="/login" replace state={{ from: location }} />
   return children
 }
-
-export default ProtectedRoute

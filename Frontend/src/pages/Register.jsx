@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthChart from "../components/AuthChart.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -65,7 +65,7 @@ function Register() {
 
       if (res.ok && data.success) {
         login(data.user);
-        navigate("/dashboard", { replace: true });
+        navigate("/app/dashboard", { replace: true });
       } else {
         setSubmitError(
           data.message || "Could not create your account. Please try again.",
@@ -83,11 +83,11 @@ function Register() {
       <div className="auth__panel">
         <AuthChart />
         <Link to="/" className="auth__brand">
-          StockSense<span className="dot">.</span>
+          Fin<span className="accent">Astra</span><span className="dot">.</span>
         </Link>
         <div className="auth__quote">
           <p>
-            "₹1,00,000 in virtual capital. Zero real risk. Every lesson still
+            "â‚¹1,00,000 in virtual capital. Zero real risk. Every lesson still
             counts."
           </p>
           <span>SIGNAL / EDUCATIONAL, NOT FINANCIAL ADVICE</span>
@@ -97,7 +97,7 @@ function Register() {
       <div className="auth__form-side">
         <div className="auth__form-wrap">
           <Link to="/" className="auth__back">
-            ← Back to StockSense
+            â† Back to StockSense
           </Link>
           <h1>Create your account</h1>
           <p className="auth__sub">
@@ -174,7 +174,7 @@ function Register() {
               className="btn btn--primary btn--block"
               disabled={submitting}
             >
-              {submitting ? "Creating account…" : "Create account"}
+              {submitting ? "Creating accountâ€¦" : "Create account"}
             </button>
           </form>
 
@@ -191,3 +191,4 @@ function Register() {
 }
 
 export default Register;
+

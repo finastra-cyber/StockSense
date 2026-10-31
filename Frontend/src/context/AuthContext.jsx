@@ -20,12 +20,25 @@ export function AuthProvider({ children }) {
           }
         }
       } catch (err) {
-        console.error("Auth verification failed:", err);
+        // Backend not available in mock mode — treat as unauthenticated
       } finally {
         setLoading(false);
       }
     }
     verifyUser();
+  }, []);
+
+  // Listen for 401 events from the axios interceptor
+  useEffect(() => {
+    function handle401() {
+      setUser(null);
+      // Use a custom event so the toast fires from the Toaster context in main
+      window.dispatchEvent(new CustomEvent("finAstra:showToast", {
+        detail: { type: "error", message: "Session expired, please log in again" }
+      }));
+    }
+    window.addEventListener("finAstra:401", handle401);
+    return () => window.removeEventListener("finAstra:401", handle401);
   }, []);
 
   function login(userData) {
